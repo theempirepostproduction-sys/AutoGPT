@@ -1,0 +1,2 @@
+{"detail":"Admin access required"}
+HTTP_STATUS: 403

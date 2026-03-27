@@ -1,0 +1,22 @@
+   column_name    |  data_type   |           column_default           
+------------------+--------------+------------------------------------
+ subscriptionTier | USER-DEFINED | 'PRO'::platform."SubscriptionTier"
+(1 row)
+
+ enumlabel  
+------------
+ FREE
+ PRO
+ BUSINESS
+ ENTERPRISE
+(4 rows)
+
+                  id                  | subscriptionTier 
+--------------------------------------+------------------
+ be2977b8-6a10-4960-b265-7b92433604f8 | PRO
+ 3e53486c-cf57-477e-ba2a-cb02dc828e1a | PRO
+ 99eb76db-8bfe-438b-a457-654d82babb9c | PRO
+ c04224ad-ea5c-4934-affb-056156aa610a | PRO
+ 85d23dba-e21b-4a62-a185-f965a34a34ad | PRO
+(5 rows)
+
