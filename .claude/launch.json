@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fourthe-dashboard",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "fourthe-dashboard", "-l", "3000", "--no-clipboard"],
+      "port": 3000
+    }
+  ]
+}
