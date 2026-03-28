@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.fourthe.com.au)",
+      "mcp__Claude_Preview__preview_start",
+      "WebFetch(domain:docs.google.com)",
+      "WebFetch(domain:doc-0o-28-sheets.googleusercontent.com)"
+    ]
+  }
+}
