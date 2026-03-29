@@ -2171,26 +2171,31 @@
   <!-- Add Team Member Modal -->
   <div class="modal-overlay" id="modal-add-team">
     <div class="modal" style="width:520px;">
-      <h3>Add Person</h3>
+      <h3>Add Team Member</h3>
+      <p style="font-size:11px;color:var(--text-muted);margin-bottom:20px;">Add a new person to your crew roster.</p>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px;">
-        <div class="form-group"><div class="form-label">First Name *</div><input class="form-input" id="at-fname" placeholder="e.g. Alex"></div>
-        <div class="form-group"><div class="form-label">Last Name *</div><input class="form-input" id="at-lname" placeholder="e.g. Mitchell"></div>
+        <div class="form-group"><div class="form-label">First Name <span style="color:var(--red);">*</span></div><input class="form-input" id="at-fname" placeholder="Alex"></div>
+        <div class="form-group"><div class="form-label">Last Name <span style="color:var(--red);">*</span></div><input class="form-input" id="at-lname" placeholder="Mitchell"></div>
       </div>
-      <div class="form-group"><div class="form-label">I Prefer (Nickname / Preferred Name)</div><input class="form-input" id="at-preferred" placeholder="e.g. Mitch — leave blank if not applicable"></div>
+      <div class="form-group"><div class="form-label">Preferred Name <span style="font-weight:400;color:var(--text-muted);font-size:9px;">optional</span></div><input class="form-input" id="at-preferred" placeholder="e.g. Mitch"></div>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px;">
-        <div class="form-group"><div class="form-label">Contact Number</div><input class="form-input" id="at-phone" type="tel" placeholder="+61 400 000 000"></div>
-        <div class="form-group"><div class="form-label">Contact Email</div><input class="form-input" id="at-email" type="email" placeholder="alex@example.com"></div>
+        <div class="form-group"><div class="form-label">Phone</div><input class="form-input" id="at-phone" type="tel" placeholder="+61 400 000 000"></div>
+        <div class="form-group"><div class="form-label">Email</div><input class="form-input" id="at-email" type="email" placeholder="alex@fourthe.com.au"></div>
       </div>
-      <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
-        <div style="font-size:9px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Emergency Contact</div>
+
+      <div style="margin-top:8px;padding-top:16px;border-top:1px solid var(--border);">
+        <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:12px;">Emergency Contact</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px;">
-          <div class="form-group"><div class="form-label">Emergency Contact Name</div><input class="form-input" id="at-emerg-name" placeholder="e.g. Sarah Mitchell"></div>
-          <div class="form-group"><div class="form-label">Emergency Contact Number</div><input class="form-input" id="at-emerg-phone" type="tel" placeholder="+61 400 000 000"></div>
+          <div class="form-group"><div class="form-label">Name</div><input class="form-input" id="at-emerg-name" placeholder="Sarah Mitchell"></div>
+          <div class="form-group"><div class="form-label">Phone</div><input class="form-input" id="at-emerg-phone" type="tel" placeholder="+61 400 000 000"></div>
         </div>
       </div>
-      <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
-        <div style="font-size:9px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Role & Rate</div>
-        <div class="form-group"><div class="form-label">Primary Role *</div>
+
+      <div style="margin-top:8px;padding-top:16px;border-top:1px solid var(--border);">
+        <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:12px;">Role & Rate</div>
+        <div class="form-group"><div class="form-label">Role <span style="color:var(--red);">*</span></div>
           <select class="form-select" id="at-role" onchange="if(this.value==='__custom__'){document.getElementById('at-role-custom').style.display='block';document.getElementById('at-role-custom').focus();}else{document.getElementById('at-role-custom').style.display='none';}">
             <optgroup label="Creative & Direction">
               <option>Creative Director</option><option>Director</option><option>Art Director</option>
@@ -2251,7 +2256,8 @@
           </div>
         </div>
       </div>
-      <div class="modal-actions">
+
+      <div class="modal-actions" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
         <button class="btn btn-ghost" onclick="closeModal('add-team')">Cancel</button>
         <button class="btn btn-primary" onclick="addTeamMember()">Add Person</button>
       </div>
@@ -2487,10 +2493,6 @@
         { id: 'INV-1049', client: 'Light+Shade', desc: 'Swipe Jobs — 50% deposit', amount: 37500, status: 'pending', statusLabel: 'Pending', due: '2026-04-20' },
       ],
       team: [
-        { id: 1, name: 'Alex Mitchell', role: 'Creative Director', avatar: 'AM', color: '#c8a456', dayRate: 1200, feeType: 'day' },
-        { id: 2, name: 'Jordan Lee', role: 'AI Director', avatar: 'JL', color: '#60a5fa', dayRate: 1100, feeType: 'day' },
-        { id: 3, name: 'Sam Patel', role: 'Producer', avatar: 'SP', color: '#4ade80', dayRate: 900, feeType: 'day' },
-        { id: 4, name: 'Riley Wong', role: 'Motion Designer', avatar: 'RW', color: '#a78bfa', dayRate: 950, feeType: 'day' },
       ],
       // Project crew assignments: who is on each project, their rate, scheduled days, actual days used
       projectCrew: [
@@ -2507,15 +2509,9 @@
         { id: 11, projectId: 7, personId: 4, role: 'Motion Designer', feeType: 'day', rate: 950, scheduledDays: 8, actualDays: 8 },
       ],
       integrations: [
-        { name: 'Google Workspace', desc: 'Calendar, Drive, Gmail', icon: 'G', color: 'var(--green-dim)', status: 'connected' },
-        { name: 'Slack', desc: 'Team messaging', icon: 'S', color: 'var(--purple-dim)', status: 'connected' },
-        { name: 'Xero', desc: 'Accounting & invoicing', icon: 'X', color: 'var(--blue-dim)', status: 'setup' },
         { name: 'Frame.io', desc: 'Video review & approval', icon: 'F', color: 'var(--orange-dim)', status: 'setup' },
-        { name: 'Notion', desc: 'Project wiki & docs', icon: 'N', color: 'rgba(136,136,160,0.1)', status: 'off' },
-        { name: 'Figma', desc: 'Design & storyboards', icon: 'Fi', color: 'var(--red-dim)', status: 'off' },
-        { name: 'Dropbox', desc: 'Asset storage', icon: 'D', color: 'var(--blue-dim)', status: 'off' },
-        { name: 'HubSpot', desc: 'CRM', icon: 'H', color: 'var(--orange-dim)', status: 'off' },
         { name: 'Google Sheets', desc: 'Job register & numbering', icon: '&#9638;', color: 'var(--green-dim)', status: 'setup' },
+        { name: 'Xero', desc: 'Accounting & invoicing', icon: 'X', color: 'var(--blue-dim)', status: 'setup' },
       ],
     };
 
@@ -2621,7 +2617,7 @@
           });
         }
 
-        if (clients && clients.length > 0) {
+        if (clients) {
           DB.clients = clients.map(c => ({
             id: c.id, name: c.name, contact: c.contact, email: c.email,
             phone: c.phone || '', address: c.address || '',
@@ -2630,14 +2626,14 @@
           }));
         }
 
-        if (tasks && tasks.length > 0) {
+        if (tasks) {
           DB.tasks = tasks.map(t => ({
             id: t.id, name: t.name, due: t.due, priority: t.priority,
             project: t.project, done: t.done, person: t.person,
           }));
         }
 
-        if (invoices && invoices.length > 0) {
+        if (invoices) {
           DB.invoices = invoices.map(i => ({
             id: i.number || i.id, number: i.number, client: i.client,
             project: i.project, projectId: i.project_id,
@@ -2649,7 +2645,7 @@
           }));
         }
 
-        if (team && team.length > 0) {
+        if (team) {
           DB.team = team.map(t => ({
             id: t.id, name: t.name, preferred: t.preferred, role: t.role,
             avatar: t.avatar, color: t.color, dayRate: Number(t.day_rate),
@@ -2658,7 +2654,7 @@
           }));
         }
 
-        if (projectCrew && projectCrew.length > 0) {
+        if (projectCrew) {
           DB.projectCrew = projectCrew.map(c => ({
             id: c.id, projectId: c.project_id, personId: c.person_id,
             role: c.role, feeType: c.fee_type, rate: Number(c.rate),
@@ -2666,7 +2662,7 @@
           }));
         }
 
-        if (bills && bills.length > 0) {
+        if (bills) {
           DB.bills = bills.map(b => ({
             id: b.id, from: b.from_name, desc: b.description, description: b.description,
             amount: Number(b.amount), paidAmount: Number(b.paid_amount),
@@ -2676,7 +2672,7 @@
           }));
         }
 
-        if (integrations && integrations.length > 0) {
+        if (integrations) {
           DB.integrations = integrations.map(i => ({
             name: i.name, desc: i.description, icon: i.icon,
             color: i.color, status: i.status, _supaId: i.id,
@@ -2813,24 +2809,28 @@
           }
         }
 
-        // Sync team
-        for (const t of DB.team) {
-          const row = {
+        // Sync team — delete all and re-insert to avoid duplicates
+        await supa.from('team_members').delete().eq('org_id', currentOrgId);
+        if (DB.team.length > 0) {
+          const teamRows = DB.team.map(t => ({
             org_id: currentOrgId, name: t.name, preferred: t.preferred || '',
             role: t.role || '', avatar: t.avatar || '', color: t.color || '',
             day_rate: t.dayRate || 0, fee_type: t.feeType || 'day',
             phone: t.phone || '', email: t.email || '',
             emergency_contact: t.emergencyContact || '', emergency_phone: t.emergencyPhone || '',
-          };
-          if (typeof t.id === 'number' && t.id > 1000000000) {
-            const { data } = await supa.from('team_members').insert(row).select().single();
-            if (data) {
-              const oldId = t.id;
-              t.id = data.id;
-              DB.projectCrew.forEach(c => { if (c.personId === oldId) c.personId = data.id; });
-            }
-          } else {
-            await supa.from('team_members').update(row).eq('id', t.id);
+          }));
+          const { data: insertedTeam } = await supa.from('team_members').insert(teamRows).select();
+          if (insertedTeam) {
+            // Update local IDs to match Supabase IDs
+            const oldIds = DB.team.map(t => t.id);
+            insertedTeam.forEach((row, i) => {
+              if (i < DB.team.length) {
+                const oldId = DB.team[i].id;
+                DB.team[i].id = row.id;
+                // Update crew references
+                if (DB.projectCrew) DB.projectCrew.forEach(c => { if (c.personId === oldId) c.personId = row.id; });
+              }
+            });
           }
         }
 
@@ -5367,6 +5367,11 @@
 
     let teamSearchQuery = '';
     function renderTeam() {
+      // Deduplicate team by name (keep last occurrence which has newest data)
+      const nameMap = new Map();
+      DB.team.forEach(t => nameMap.set(t.name, t));
+      DB.team = Array.from(nameMap.values());
+
       const query = teamSearchQuery.toLowerCase();
       const filtered = DB.team.filter(t => {
         if (!query) return true;
@@ -5491,6 +5496,9 @@
             <h1>${displayName}</h1>
             <p>${t.role} ${t.preferred ? '&mdash; ' + t.name : ''}</p>
           </div>
+        </div>
+        <div class="header-right">
+          <button class="btn btn-ghost" onclick="confirmDeleteTeamMember(${t.id})" style="color:var(--red);border-color:rgba(239,68,68,0.3);font-size:11px;">Delete Team Member</button>
         </div>
       `;
 
@@ -5787,50 +5795,124 @@
     function toggleIntegrationStatus(index) {
       const int = DB.integrations[index];
       if (!int) return;
-      const cycle = { off: 'setup', setup: 'connected', connected: 'off' };
-      int.status = cycle[int.status] || 'off';
+      if (int.name === 'Xero') { openXeroSetup(); return; }
+      if (int.name === 'Frame.io') { openFrameioSetup(); return; }
+      if (int.name === 'Google Sheets') { /* scroll to sheets config */ return; }
+    }
+
+    function openFrameioSetup() {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.id = 'modal-frameio-setup';
+      overlay.innerHTML = `
+        <div class="modal" style="max-width:480px;">
+          <h3 style="display:flex;align-items:center;gap:8px;">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--orange-dim);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--orange);">F</div>
+            Frame.io Setup
+          </h3>
+          <p style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">Frame.io links are added per-project. Go to any project and use the Frame.io section to link your Frame.io project.</p>
+          <div class="form-group">
+            <div class="form-label">Developer Token <span style="font-weight:400;color:var(--text-muted);font-size:9px;">optional</span></div>
+            <input class="form-input" id="frameio-token-input" value="${DB.frameioToken || ''}" placeholder="fio-u-..." style="font-family:var(--mono);font-size:10px;" type="password">
+            <div style="font-size:9px;color:var(--text-muted);margin-top:4px;">From <a href="https://developer.frame.io/app/tokens" target="_blank" style="color:var(--accent);">developer.frame.io/app/tokens</a>. Used for future API features.</div>
+          </div>
+          <div class="modal-actions" style="margin-top:20px;">
+            <button class="btn btn-ghost" onclick="document.getElementById('modal-frameio-setup').remove()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveFrameioSetup()">Save</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
+    }
+
+    function saveFrameioSetup() {
+      const token = document.getElementById('frameio-token-input').value.trim();
+      DB.frameioToken = token;
+      const fIdx = DB.integrations.findIndex(i => i.name === 'Frame.io');
+      if (fIdx >= 0) DB.integrations[fIdx].status = token ? 'connected' : 'setup';
       saveData();
+      document.getElementById('modal-frameio-setup').remove();
       renderIntegrations();
-      const labels = { connected: 'Connected', setup: 'Setup Needed', off: 'Disconnected' };
-      showToast(int.name + ': ' + labels[int.status]);
+      showToast(token ? 'Frame.io connected' : 'Frame.io settings saved');
     }
 
     function renderIntegrations() {
-      document.getElementById('integrations-list').innerHTML = DB.integrations.map((int, idx) => `
-        <div class="integration-row">
-          <div class="integration-icon" style="background:${int.color}">${int.icon}</div>
-          <div style="flex:1"><div class="integration-name">${int.name}</div><div class="integration-desc">${int.desc}</div></div>
-          <div class="integration-status ${int.status}" style="cursor:pointer;" onclick="${int.name === 'Xero' ? 'openXeroSetup()' : 'toggleIntegrationStatus(' + idx + ')'}" title="Click to ${int.status === 'connected' ? 'manage' : 'connect'}">${int.status === 'connected' ? 'Connected' : int.status === 'setup' ? 'Setup Needed' : 'Connect'}</div>
-        </div>
-      `).join('') + `
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
-          <div style="font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
-            <span style="color:var(--green);">&#9638;</span> Google Sheets — Job Register
+      // Deduplicate integrations by name
+      const seen = new Map();
+      DB.integrations.forEach((int, idx) => {
+        if (!seen.has(int.name) || int.status === 'connected') {
+          seen.set(int.name, { ...int, _idx: idx });
+        }
+      });
+      DB.integrations = Array.from(seen.values()).map(({ _idx, ...rest }) => rest);
+
+      // Check live connection statuses
+      const xeroInt = DB.integrations.find(i => i.name === 'Xero');
+      const frameioInt = DB.integrations.find(i => i.name === 'Frame.io');
+      const sheetsInt = DB.integrations.find(i => i.name === 'Google Sheets');
+      if (frameioInt && DB.frameioToken) frameioInt.status = 'connected';
+      if (sheetsInt && DB.gsheetScriptUrl) sheetsInt.status = 'connected';
+
+      const el = document.getElementById('integrations-list');
+      el.innerHTML = '';
+
+      // === FRAME.IO CARD ===
+      const fStatus = frameioInt ? frameioInt.status : 'setup';
+      el.innerHTML += `
+        <div style="padding:20px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:var(--orange-dim);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--orange);">F</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;">Frame.io</div>
+                <div style="font-size:10px;color:var(--text-muted);">Video review & approval</div>
+              </div>
+            </div>
+            <div class="integration-status ${fStatus}" style="cursor:pointer;" onclick="openFrameioSetup()">${fStatus === 'connected' ? 'Connected' : 'Setup'}</div>
           </div>
-          <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Link Frame.io projects to your dashboard projects for quick access to reviews, comments, and file sharing.</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="openFrameioSetup()" style="font-size:10px;">${fStatus === 'connected' ? 'Manage' : 'Configure'}</button>
+            ${DB.frameioToken ? '<span style="font-size:9px;color:var(--green);display:flex;align-items:center;gap:4px;">&#10003; Token saved</span>' : ''}
+          </div>
+        </div>`;
+
+      // === GOOGLE SHEETS CARD ===
+      const sStatus = sheetsInt ? sheetsInt.status : 'setup';
+      el.innerHTML += `
+        <div style="padding:20px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:var(--green-dim);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:var(--green);">&#9638;</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;">Google Sheets</div>
+                <div style="font-size:10px;color:var(--text-muted);">Job register & numbering</div>
+              </div>
+            </div>
+            <div class="integration-status ${sStatus}">${sStatus === 'connected' ? 'Connected' : 'Setup Needed'}</div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px;">
             Syncs with your FOURTHE job register spreadsheet. Pulls job numbers and pushes new projects automatically.
           </div>
-          <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
-            <div style="font-size:11px;color:var(--text-muted);min-width:100px;">Spreadsheet ID:</div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+            <div style="font-size:10px;color:var(--text-muted);min-width:90px;font-weight:600;">Spreadsheet ID</div>
             <input class="form-input" value="${GSHEET_ID}" readonly style="font-family:var(--mono);font-size:10px;flex:1;">
           </div>
           <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
-            <div style="font-size:11px;color:var(--text-muted);min-width:100px;">Apps Script URL:</div>
+            <div style="font-size:10px;color:var(--text-muted);min-width:90px;font-weight:600;">Script URL</div>
             <input class="form-input" id="gsheet-script-url" value="${DB.gsheetScriptUrl || ''}" placeholder="https://script.google.com/macros/s/..." style="font-family:var(--mono);font-size:10px;flex:1;">
-            <button class="btn btn-ghost btn-sm" onclick="DB.gsheetScriptUrl=document.getElementById('gsheet-script-url').value;saveData();showToast('Script URL saved');">Save</button>
+            <button class="btn btn-ghost btn-sm" onclick="DB.gsheetScriptUrl=document.getElementById('gsheet-script-url').value;saveData();renderIntegrations();showToast('Script URL saved');" style="font-size:10px;">Save</button>
           </div>
           <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
-            <button class="btn btn-primary btn-sm" onclick="fetchJobRegister().then(()=>renderIntegrations())">Sync Now</button>
-            <span style="font-size:10px;color:var(--text-muted);">
+            <button class="btn btn-primary btn-sm" onclick="fetchJobRegister().then(()=>renderIntegrations())" style="font-size:10px;">Sync Now</button>
+            <span style="font-size:9px;color:var(--text-muted);">
               ${DB.jobRegisterLastSync ? 'Last sync: ' + new Date(DB.jobRegisterLastSync).toLocaleString('en-AU') : 'Not synced yet'}
               ${DB.nextJobNumber ? ' &mdash; Next job: ' + DB.nextJobNumber : ''}
-              &mdash; Auto-syncs every 5 minutes
             </span>
           </div>
           ${DB.jobRegister && DB.jobRegister.length > 0 ? `
             <div style="margin-top:12px;max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;">
               <table style="width:100%;border-collapse:collapse;font-size:11px;">
-                <thead><tr style="background:var(--surface-2);position:sticky;top:0;">
+                <thead><tr style="background:var(--surface-3);position:sticky;top:0;">
                   <th style="padding:6px 8px;text-align:left;font-size:9px;text-transform:uppercase;color:var(--text-muted);">Job #</th>
                   <th style="padding:6px 8px;text-align:left;font-size:9px;text-transform:uppercase;color:var(--text-muted);">Name</th>
                   <th style="padding:6px 8px;text-align:left;font-size:9px;text-transform:uppercase;color:var(--text-muted);">Client</th>
@@ -5847,8 +5929,28 @@
                   </tr>`).join('')}
                 </tbody>
               </table>
+            </div>` : ''}
+        </div>`;
+
+      // === XERO CARD ===
+      const xStatus = xeroInt ? xeroInt.status : 'setup';
+      el.innerHTML += `
+        <div style="padding:20px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:var(--blue-dim);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--blue);">X</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;">Xero</div>
+                <div style="font-size:10px;color:var(--text-muted);">Accounting & invoicing</div>
+              </div>
             </div>
-          ` : ''}
+            <div class="integration-status ${xStatus}" style="cursor:pointer;" onclick="openXeroSetup()">${xStatus === 'connected' ? 'Connected' : 'Setup Needed'}</div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Sync invoices, track payments, and manage your accounting directly from the dashboard.</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="openXeroSetup()" style="font-size:10px;">${xStatus === 'connected' ? 'Manage Connection' : 'Connect Xero'}</button>
+            ${xStatus === 'connected' ? '<button class="btn btn-ghost btn-sm" onclick="disconnectXero()" style="font-size:10px;color:var(--red);">Disconnect</button>' : ''}
+          </div>
         </div>`;
     }
 
@@ -6560,6 +6662,45 @@
       document.getElementById('modal-delete-client').remove();
       showToast('Client "' + client.name + '" deleted');
       showPage('clients');
+    }
+
+    function confirmDeleteTeamMember(memberId) {
+      const member = DB.team.find(t => t.id === memberId);
+      if (!member) return;
+      const assignedProjects = DB.projects.filter(p => p.person === member.name);
+      const crewAssignments = DB.projectCrew ? DB.projectCrew.filter(c => c.personId === memberId) : [];
+      let msg = `Are you sure you want to delete <strong>"${member.name}"</strong>?`;
+      if (assignedProjects.length > 0 || crewAssignments.length > 0) {
+        msg += `<br><br><span style="color:var(--red);font-size:11px;">&#9888; This team member is assigned to ${assignedProjects.length} project(s)${crewAssignments.length > 0 ? ' and ' + crewAssignments.length + ' crew assignment(s)' : ''}. The project assignments will be cleared.</span>`;
+      }
+      msg += `<br><br><span style="font-size:11px;color:var(--text-muted);">This action cannot be undone.</span>`;
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.id = 'modal-delete-team-member';
+      overlay.innerHTML = `
+        <div class="modal" style="max-width:420px;">
+          <h3 style="color:var(--red);">Delete Team Member</h3>
+          <p style="font-size:12px;line-height:1.6;">${msg}</p>
+          <div class="modal-actions" style="margin-top:20px;">
+            <button class="btn btn-ghost" onclick="document.getElementById('modal-delete-team-member').remove()">Cancel</button>
+            <button class="btn" onclick="executeDeleteTeamMember(${memberId})" style="background:var(--red);color:#fff;font-weight:700;">Delete Team Member</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
+    }
+
+    function executeDeleteTeamMember(memberId) {
+      const member = DB.team.find(t => t.id === memberId);
+      if (!member) return;
+      DB.team = DB.team.filter(t => t.id !== memberId);
+      // Clear person assignment from projects
+      DB.projects.forEach(p => { if (p.person === member.name) p.person = ''; });
+      // Remove crew assignments
+      if (DB.projectCrew) DB.projectCrew = DB.projectCrew.filter(c => c.personId !== memberId);
+      saveData();
+      document.getElementById('modal-delete-team-member').remove();
+      showToast('Team member "' + member.name + '" deleted');
+      showPage('team');
     }
 
     function openEditClient(clientName) {
@@ -7568,31 +7709,93 @@
     // ===========================
     // FRAME.IO INTEGRATION
     // ===========================
+    function getFrameioEmbedId(url) {
+      // Extract presentation/review/share link ID for embedding
+      // Supports: https://app.frame.io/presentations/XXXX, /reviews/XXXX
+      // Also: https://next.frame.io/share/XXXX, /presentations/XXXX, /reviews/XXXX
+      // Also: https://f.io/SHORTCODE (short links)
+      const match = url.match(/(?:app|next)\.frame\.io\/(?:presentations|reviews|share)\/([a-f0-9-]+)/i);
+      if (match) return match[1];
+      // Short link: f.io/XXXX — return the short code, we'll resolve it
+      const shortMatch = url.match(/f\.io\/([A-Za-z0-9_-]+)/i);
+      if (shortMatch) return shortMatch[1];
+      return null;
+    }
+
     function renderFrameioSection(p) {
       const frameioUrl = p.frameioUrl || '';
+      const frameioPresentation = p.frameioPresentationUrl || '';
       const actionsEl = document.getElementById('pd-frameio-actions');
       const bodyEl = document.getElementById('pd-frameio');
 
-      if (frameioUrl) {
+      const hasProject = !!frameioUrl;
+      const hasPresentation = !!frameioPresentation;
+      // Try embed from presentation field first, then fall back to project URL field
+      let embedId = hasPresentation ? getFrameioEmbedId(frameioPresentation) : null;
+      let embedSource = frameioPresentation;
+      if (!embedId && hasProject) {
+        embedId = getFrameioEmbedId(frameioUrl);
+        embedSource = frameioUrl;
+      }
+
+      if (hasProject || hasPresentation) {
+        const openLink = hasProject ? frameioUrl : (frameioPresentation || '');
+        const shareLink = frameioPresentation || frameioUrl || '';
+
         actionsEl.innerHTML = `
-          <div style="display:flex;gap:6px;">
-            <a href="${frameioUrl}" target="_blank" class="btn btn-primary btn-sm" style="text-decoration:none;">Open in Frame.io &#8599;</a>
-            <button class="btn btn-ghost btn-sm" onclick="editFrameioLink(${p.id})" style="font-size:10px;">Edit Link</button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn btn-ghost btn-sm" onclick="editFrameioLink(${p.id})" style="font-size:10px;">Edit Links</button>
             <button class="btn btn-ghost btn-sm" onclick="removeFrameioLink(${p.id})" style="font-size:10px;color:var(--red);">Remove</button>
           </div>`;
-        bodyEl.innerHTML = `
-          <div style="display:flex;align-items:center;gap:14px;padding:4px 0;">
-            <div style="width:48px;height:48px;border-radius:8px;background:rgba(200,164,86,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+
+        let bodyHTML = '';
+
+        // Embedded player/browser
+        if (embedId) {
+          let embedSrc;
+          const isShareLink = embedSource.includes('/share/');
+          const isShortLink = embedSource.match(/f\.io\//i);
+          if (isShareLink) {
+            embedSrc = `https://next.frame.io/share/${embedId}`;
+          } else if (isShortLink) {
+            embedSrc = embedSource;
+          } else {
+            embedSrc = `https://app.frame.io/presentations/${embedId}/player`;
+          }
+          bodyHTML += `
+            <div id="frameio-embed-wrapper" style="position:relative;height:400px;overflow:hidden;border-radius:8px 8px 0 0;background:#000;margin-bottom:0;min-height:200px;max-height:800px;">
+              <iframe src="${embedSrc}"
+                style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
+                allow="fullscreen; autoplay; clipboard-write"
+                allowfullscreen></iframe>
             </div>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:12px;font-weight:600;color:var(--text);">Project linked to Frame.io</div>
-              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${frameioUrl}">${frameioUrl}</div>
-            </div>
-          </div>
-          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:10px;color:var(--text-muted);">
-            Click <strong>"Open in Frame.io"</strong> to view assets, review files, and leave comments directly in Frame.io.
+            <div id="frameio-resize-handle" style="height:10px;background:var(--surface-2);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;cursor:ns-resize;display:flex;align-items:center;justify-content:center;margin-bottom:14px;transition:background 0.15s;" onmouseenter="this.style.background='var(--surface-3)'" onmouseleave="this.style.background='var(--surface-2)'">
+              <div style="width:40px;height:3px;border-radius:2px;background:var(--border-hover);"></div>
+            </div>`;
+        }
+
+        // Quick actions row
+        bodyHTML += `
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="${openLink}" target="_blank" class="btn btn-sm" style="background:var(--accent);color:#0a0a0c;font-weight:700;font-size:11px;text-decoration:none;display:flex;align-items:center;gap:6px;padding:8px 16px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+              Open in Frame.io
+            </a>
+            <a href="${shareLink}" target="_blank" class="btn btn-ghost btn-sm" style="text-decoration:none;display:flex;align-items:center;gap:6px;font-size:11px;padding:8px 14px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Share / Review
+            </a>
+            <a href="${openLink}" target="_blank" class="btn btn-ghost btn-sm" style="text-decoration:none;display:flex;align-items:center;gap:6px;font-size:11px;padding:8px 14px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+              Comment
+            </a>
+            <a href="${openLink}" target="_blank" class="btn btn-ghost btn-sm" style="text-decoration:none;display:flex;align-items:center;gap:6px;font-size:11px;padding:8px 14px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download
+            </a>
           </div>`;
+
+        bodyEl.innerHTML = bodyHTML;
       } else {
         actionsEl.innerHTML = '';
         bodyEl.innerHTML = `
@@ -7600,36 +7803,49 @@
             <div style="width:48px;height:48px;border-radius:12px;background:rgba(200,164,86,0.08);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
             </div>
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">No Frame.io project linked yet</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">No Frame.io project linked yet</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:14px;">Link a project for quick access, or add a Presentation Link to embed video reviews.</div>
             <button class="btn btn-sm" onclick="editFrameioLink(${p.id})" style="background:var(--accent);color:#0a0a0c;font-weight:700;font-size:11px;">+ Link Frame.io Project</button>
           </div>`;
       }
+      // Init resize handle after render
+      setTimeout(initFrameioResize, 50);
     }
 
     function editFrameioLink(projectId) {
       const p = DB.projects.find(p => p.id === projectId);
       if (!p) return;
       const currentUrl = p.frameioUrl || '';
+      const currentPresentation = p.frameioPresentationUrl || '';
       const overlay = document.createElement('div');
       overlay.className = 'modal-overlay active';
       overlay.id = 'modal-frameio-link';
       overlay.innerHTML = `
-        <div class="modal" style="max-width:480px;">
+        <div class="modal" style="max-width:520px;">
           <h3 style="display:flex;align-items:center;gap:8px;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
             Link Frame.io Project
           </h3>
-          <p style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">Paste the Frame.io project URL from your browser. This creates a quick-access link to review assets and files.</p>
+          <p style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">Connect your Frame.io project for quick access and embed video reviews directly in the dashboard.</p>
+
           <div class="form-group">
-            <div class="form-label">Frame.io Project URL</div>
+            <div class="form-label">Project URL</div>
             <input class="form-input" id="frameio-url-input" value="${currentUrl}" placeholder="https://next.frame.io/project/..." style="font-family:var(--mono);font-size:11px;">
+            <div style="font-size:9px;color:var(--text-muted);margin-top:4px;">Copy from your browser address bar when viewing the project</div>
           </div>
-          <div style="font-size:10px;color:var(--text-muted);margin-top:-8px;margin-bottom:16px;">
-            Find this in your browser address bar when viewing the project in Frame.io
+
+          <div class="form-group" style="margin-top:16px;">
+            <div class="form-label" style="display:flex;align-items:center;gap:6px;">
+              Presentation / Review Link
+              <span style="font-size:8px;background:var(--accent-dim);color:var(--accent);padding:2px 6px;border-radius:4px;font-weight:600;">EMBEDS VIDEO</span>
+            </div>
+            <input class="form-input" id="frameio-presentation-input" value="${currentPresentation}" placeholder="https://f.io/XXXX or https://next.frame.io/share/..." style="font-family:var(--mono);font-size:11px;">
+            <div style="font-size:9px;color:var(--text-muted);margin-top:4px;">Paste any Frame.io <strong>share link</strong> (f.io/..., next.frame.io/share/..., or presentation link). This embeds the video player in the dashboard.</div>
           </div>
-          <div class="modal-actions">
+
+          <div class="modal-actions" style="margin-top:20px;">
             <button class="btn btn-ghost" onclick="document.getElementById('modal-frameio-link').remove()">Cancel</button>
-            <button class="btn" onclick="saveFrameioLink(${projectId})" style="background:var(--accent);color:#0a0a0c;font-weight:700;">Save Link</button>
+            <button class="btn" onclick="saveFrameioLink(${projectId})" style="background:var(--accent);color:#0a0a0c;font-weight:700;">Save Links</button>
           </div>
         </div>`;
       document.body.appendChild(overlay);
@@ -7638,22 +7854,78 @@
 
     function saveFrameioLink(projectId) {
       const url = document.getElementById('frameio-url-input').value.trim();
+      const presentation = document.getElementById('frameio-presentation-input').value.trim();
       const p = DB.projects.find(p => p.id === projectId);
       if (!p) return;
       p.frameioUrl = url;
+      p.frameioPresentationUrl = presentation;
       saveData();
       document.getElementById('modal-frameio-link').remove();
       renderFrameioSection(p);
-      showToast(url ? 'Frame.io project linked' : 'Frame.io link removed');
+      showToast(url || presentation ? 'Frame.io links saved' : 'Frame.io links removed');
     }
 
     function removeFrameioLink(projectId) {
       const p = DB.projects.find(p => p.id === projectId);
       if (!p) return;
       p.frameioUrl = '';
+      p.frameioPresentationUrl = '';
       saveData();
       renderFrameioSection(p);
-      showToast('Frame.io link removed');
+      showToast('Frame.io links removed');
+    }
+
+    // Frame.io embed resize handle
+    function initFrameioResize() {
+      const handle = document.getElementById('frameio-resize-handle');
+      const wrapper = document.getElementById('frameio-embed-wrapper');
+      if (!handle || !wrapper) return;
+      let startY, startH;
+      handle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        startY = e.clientY;
+        startH = wrapper.offsetHeight;
+        // Disable iframe pointer events during drag
+        const iframe = wrapper.querySelector('iframe');
+        if (iframe) iframe.style.pointerEvents = 'none';
+        function onMove(e) {
+          const newH = Math.min(800, Math.max(200, startH + (e.clientY - startY)));
+          wrapper.style.height = newH + 'px';
+        }
+        function onUp() {
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+          if (iframe) iframe.style.pointerEvents = '';
+          // Save preferred height
+          localStorage.setItem('frameio-embed-height', wrapper.offsetHeight);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+      // Touch support
+      handle.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        startY = touch.clientY;
+        startH = wrapper.offsetHeight;
+        const iframe = wrapper.querySelector('iframe');
+        if (iframe) iframe.style.pointerEvents = 'none';
+        function onTouchMove(e) {
+          const t = e.touches[0];
+          const newH = Math.min(800, Math.max(200, startH + (t.clientY - startY)));
+          wrapper.style.height = newH + 'px';
+        }
+        function onTouchEnd() {
+          document.removeEventListener('touchmove', onTouchMove);
+          document.removeEventListener('touchend', onTouchEnd);
+          if (iframe) iframe.style.pointerEvents = '';
+          localStorage.setItem('frameio-embed-height', wrapper.offsetHeight);
+        }
+        document.addEventListener('touchmove', onTouchMove);
+        document.addEventListener('touchend', onTouchEnd);
+      });
+      // Restore saved height
+      const saved = localStorage.getItem('frameio-embed-height');
+      if (saved) wrapper.style.height = saved + 'px';
     }
 
     // ===========================
@@ -8860,11 +9132,10 @@
       // Load data from Supabase
       await loadDataFromSupabase();
 
-      // Only seed if Supabase is truly empty
-      const { count } = await supa.from('projects').select('*', { count: 'exact', head: true });
-      if (count === 0) {
-        await seedDefaultData();
-      }
+      // Seed data disabled — start with clean slate
+      // To re-enable demo data for new orgs, uncomment below:
+      // const { count } = await supa.from('projects').select('*', { count: 'exact', head: true });
+      // if (count === 0) await seedDefaultData();
 
       // Setup real-time
       setupRealtimeSubs();
