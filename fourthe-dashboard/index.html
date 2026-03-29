@@ -545,7 +545,7 @@
       background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
       z-index: 200; align-items: center; justify-content: center;
     }
-    .modal-overlay.open { display: flex; }
+    .modal-overlay.open, .modal-overlay.active { display: flex; }
     .modal {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 14px; width: 460px; max-width: 90vw; padding: 24px;
@@ -1321,6 +1321,18 @@
 
         <!-- Crew Profit Summary -->
         <div class="stats-grid" id="pd-crew-summary" style="margin-bottom:20px;"></div>
+
+        <!-- Frame.io Integration -->
+        <div class="card" style="margin-bottom:20px;" id="pd-frameio-card">
+          <div class="card-header">
+            <div class="card-title" style="display:flex;align-items:center;gap:8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg>
+              Frame.io
+            </div>
+            <div id="pd-frameio-actions"></div>
+          </div>
+          <div class="card-body" id="pd-frameio"></div>
+        </div>
 
         <div class="grid-2">
           <div class="card">
@@ -2345,6 +2357,11 @@
       <h3>Add as New Project</h3>
       <p style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">Create a project from the current calculator configuration. Phases and sub-tasks will be auto-scheduled on the Gantt timeline.</p>
 
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:12px 16px;background:var(--surface-2);border:1px solid var(--accent-dim);border-radius:var(--radius);">
+        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;">Job #</div>
+        <div id="cp-job-number" style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--accent);letter-spacing:1px;"></div>
+      </div>
+
       <div class="form-group">
         <div class="form-label">Client</div>
         <div id="cp-client-select-wrap" style="display:flex;gap:6px;align-items:center;">
@@ -2437,39 +2454,37 @@
 
     const defaultData = {
       projects: [
-        { id: 1, name: 'Milkrun Man Campaign', client: 'Milkrun', status: 'active', statusLabel: 'Production', start: '2026-03-10', deadline: '2026-04-15', budget: 35000, progress: 72, color: '#c8a456', stage: 'production', person: 'Alex Mitchell', type: 'Film' },
-        { id: 2, name: 'Summer OOH Series', client: 'Tourism QLD', status: 'active', statusLabel: 'Production', start: '2026-03-15', deadline: '2026-04-28', budget: 28000, progress: 45, color: '#60a5fa', stage: 'production', person: 'Jordan Lee', type: 'TVC' },
-        { id: 3, name: 'Brand Anthem Film', client: 'REDARC Electronics', status: 'post-prod', statusLabel: 'Post Production', start: '2026-02-20', deadline: '2026-04-05', budget: 42000, progress: 88, color: '#a78bfa', stage: 'post-prod', person: 'Alex Mitchell', type: 'Film' },
-        { id: 4, name: 'Social Content Pack Q2', client: 'Canva', status: 'planning', statusLabel: 'Pre-Production', start: '2026-03-28', deadline: '2026-05-12', budget: 18500, progress: 15, color: '#4ade80', stage: 'pre-prod', person: 'Jordan Lee', type: 'Social & Online' },
-        { id: 5, name: 'Product Launch Film', client: 'Koala', status: 'scoping', statusLabel: 'Scoping & Quoting', start: '2026-04-01', deadline: '2026-06-01', budget: 52000, progress: 5, color: '#fb923c', stage: 'scoping', person: 'Sam Patel', type: 'Film' },
-        { id: 6, name: 'AI Showcase Reel', client: 'FOURTHE', status: 'paused', statusLabel: 'On Hold', start: '2026-03-01', deadline: '2026-05-15', budget: 5000, progress: 30, color: '#8888a0', stage: 'leads', person: 'Riley Wong', type: 'Social & Online' },
-        { id: 7, name: 'Autumn Stills Collection', client: 'Cotton On', status: 'complete', statusLabel: 'Delivered', start: '2026-02-10', deadline: '2026-03-20', budget: 12000, progress: 100, color: '#22d3ee', stage: 'delivery', person: 'Riley Wong', type: 'Stills' },
-        { id: 8, name: 'Sony BRAVIA Campaign', client: 'Sony', status: 'lead', statusLabel: 'Potential Project', start: '', deadline: '', budget: 0, progress: 0, color: '#f472b6', stage: 'leads', person: 'Alex Mitchell', type: 'TVC' },
-        { id: 9, name: 'Orphan Espresso Brand Film', client: 'Orphan', status: 'lead', statusLabel: 'Potential Project', start: '', deadline: '', budget: 0, progress: 0, color: '#818cf8', stage: 'leads', person: 'Sam Patel', type: 'Film' },
+        { id: 1, jobNumber: 'FT-001', name: 'Milkrun Man', client: 'Fourthe', status: 'active', statusLabel: 'Internal', start: '2026-01-01', deadline: '2026-03-15', budget: 0, progress: 72, color: '#c8a456', stage: 'production', person: 'Alex Mitchell', type: 'Film' },
+        { id: 2, jobNumber: 'FT-002', name: 'A Good Knight', client: 'Fourthe', status: 'active', statusLabel: 'Internal', start: '2026-02-14', deadline: '2026-04-15', budget: 0, progress: 45, color: '#60a5fa', stage: 'production', person: 'Jordan Lee', type: 'Film' },
+        { id: 3, jobNumber: 'FT-003', name: 'Hughe Deel', client: 'Fourthe', status: 'active', statusLabel: 'Internal', start: '2026-02-17', deadline: '2026-04-17', budget: 0, progress: 30, color: '#a78bfa', stage: 'production', person: 'Alex Mitchell', type: 'Film' },
+        { id: 4, jobNumber: 'FT-004', name: 'Bravia in-store', client: 'Sony', status: 'scoping', statusLabel: 'Scoping & Quoting', start: '2026-02-17', deadline: '2026-04-30', budget: 30000, progress: 15, color: '#4ade80', stage: 'scoping', person: 'Sam Patel', type: 'TVC' },
+        { id: 5, jobNumber: 'FT-005', name: 'La Souris', client: 'Fourthe', status: 'active', statusLabel: 'Internal', start: '2026-03-17', deadline: '2026-05-17', budget: 0, progress: 10, color: '#fb923c', stage: 'pre-prod', person: 'Riley Wong', type: 'Film' },
+        { id: 6, jobNumber: 'FT-006', name: 'McSharing', client: 'Austin Studio', status: 'planning', statusLabel: 'Approved', start: '2026-03-17', deadline: '2026-05-15', budget: 0, progress: 5, color: '#22d3ee', stage: 'pre-prod', person: 'Jordan Lee', type: 'Social & Online' },
+        { id: 7, jobNumber: 'FT-007', name: 'Ideally', client: 'RMA (Ben Coulsin)', status: 'scoping', statusLabel: 'Scoping & Quoting', start: '2026-03-19', deadline: '2026-05-19', budget: 40000, progress: 5, color: '#f472b6', stage: 'scoping', person: 'Alex Mitchell', type: 'Film' },
+        { id: 8, jobNumber: 'FT-008', name: 'Lady Death', client: 'Bronte Films', status: 'scoping', statusLabel: 'Scoping & Quoting', start: '2026-03-19', deadline: '2026-06-19', budget: 300000, progress: 5, color: '#818cf8', stage: 'scoping', person: 'Sam Patel', type: 'Film' },
+        { id: 9, jobNumber: 'FT-009', name: 'Swipe Jobs', client: 'Light+Shade', status: 'scoping', statusLabel: 'Scoping & Quoting', start: '2026-03-19', deadline: '2026-05-30', budget: 75000, progress: 5, color: '#8888a0', stage: 'scoping', person: 'Riley Wong', type: 'Social & Online' },
       ],
       tasks: [
-        { id: 1, name: 'Deliver Milkrun final renders', due: '2026-03-30', priority: 'high', project: 'Milkrun Man Campaign', done: false, person: 'Alex Mitchell' },
-        { id: 2, name: 'REDARC revision round 2', due: '2026-04-03', priority: 'high', project: 'Brand Anthem Film', done: false, person: 'Alex Mitchell' },
-        { id: 3, name: 'Tourism QLD storyboard updates', due: '2026-04-07', priority: 'medium', project: 'Summer OOH Series', done: false, person: 'Jordan Lee' },
-        { id: 4, name: 'Canva creative brief review', due: '2026-04-10', priority: 'medium', project: 'Social Content Pack Q2', done: false, person: 'Jordan Lee' },
-        { id: 5, name: 'Koala scoping call', due: '2026-04-12', priority: 'low', project: 'Product Launch Film', done: false, person: 'Sam Patel' },
-        { id: 6, name: 'Send Milkrun v3 cut for review', due: '2026-03-26', priority: 'medium', project: 'Milkrun Man Campaign', done: true, person: 'Alex Mitchell' },
+        { id: 1, name: 'Milkrun Man final edit', due: '2026-03-30', priority: 'high', project: 'Milkrun Man', done: false, person: 'Alex Mitchell' },
+        { id: 2, name: 'Bravia in-store scope document', due: '2026-04-03', priority: 'high', project: 'Bravia in-store', done: false, person: 'Sam Patel' },
+        { id: 3, name: 'McSharing storyboard review', due: '2026-04-07', priority: 'medium', project: 'McSharing', done: false, person: 'Jordan Lee' },
+        { id: 4, name: 'Lady Death creative brief', due: '2026-04-10', priority: 'medium', project: 'Lady Death', done: false, person: 'Sam Patel' },
+        { id: 5, name: 'Swipe Jobs creative direction', due: '2026-04-12', priority: 'low', project: 'Swipe Jobs', done: false, person: 'Riley Wong' },
+        { id: 6, name: 'Ideally concept development', due: '2026-04-05', priority: 'medium', project: 'Ideally', done: false, person: 'Alex Mitchell' },
       ],
       clients: [
-        { id: 1, name: 'Milkrun', contact: 'Sarah Chen', email: 'sarah@milkrun.com', projects: 1, lifetime: 68000, industry: 'Delivery' },
-        { id: 2, name: 'Tourism QLD', contact: 'Mark Davis', email: 'mark.d@tq.com.au', projects: 1, lifetime: 45000, industry: 'Tourism' },
-        { id: 3, name: 'REDARC Electronics', contact: 'James Ward', email: 'jward@redarc.com.au', projects: 2, lifetime: 78000, industry: 'Automotive' },
-        { id: 4, name: 'Canva', contact: 'Lisa Pham', email: 'lisa.p@canva.com', projects: 1, lifetime: 18500, industry: 'Tech / SaaS' },
-        { id: 5, name: 'Koala', contact: 'Ben Taylor', email: 'ben@koala.com', projects: 1, lifetime: 52000, industry: 'E-commerce' },
-        { id: 6, name: 'Cotton On', contact: 'Amy Richards', email: 'amy.r@cottonon.com.au', projects: 0, lifetime: 34000, industry: 'Fashion' },
+        { id: 1, name: 'Fourthe', contact: '', email: '', projects: 4, lifetime: 0, industry: 'Entertainment & Media' },
+        { id: 2, name: 'Sony', contact: '', email: '', projects: 1, lifetime: 30000, industry: 'Technology' },
+        { id: 3, name: 'Austin Studio', contact: '', email: '', projects: 1, lifetime: 0, industry: 'Entertainment & Media' },
+        { id: 4, name: 'RMA (Ben Coulsin)', contact: 'Ben Coulsin', email: '', projects: 1, lifetime: 40000, industry: 'Advertising & Marketing' },
+        { id: 5, name: 'Bronte Films', contact: '', email: '', projects: 1, lifetime: 300000, industry: 'Entertainment & Media' },
+        { id: 6, name: 'Light+Shade', contact: '', email: '', projects: 1, lifetime: 75000, industry: 'Entertainment & Media' },
       ],
       invoices: [
-        { id: 'INV-1052', client: 'Koala', desc: 'Scoping & creative brief', amount: 15600, status: 'pending', statusLabel: 'Pending', due: '2026-04-12' },
-        { id: 'INV-1051', client: 'Tourism QLD', desc: 'Production milestone 1', amount: 14000, status: 'active', statusLabel: 'Sent', due: '2026-04-05' },
-        { id: 'INV-1050', client: 'Milkrun', desc: 'Final delivery payment', amount: 17500, status: 'review', statusLabel: 'Overdue', due: '2026-03-22' },
-        { id: 'INV-1049', client: 'Canva', desc: '50% deposit', amount: 9250, status: 'active', statusLabel: 'Sent', due: '2026-04-10' },
-        { id: 'INV-1048', client: 'REDARC Electronics', desc: 'Revision round 2', amount: 8400, status: 'complete', statusLabel: 'Paid', due: '2026-03-25' },
-        { id: 'INV-1047', client: 'REDARC Electronics', desc: '50% deposit', amount: 14000, status: 'complete', statusLabel: 'Paid', due: '2026-03-15' },
+        { id: 'INV-1052', client: 'Bronte Films', desc: 'Lady Death — 10% deposit', amount: 30000, status: 'active', statusLabel: 'Sent', due: '2026-04-05' },
+        { id: 'INV-1051', client: 'RMA (Ben Coulsin)', desc: 'Ideally — scoping fee', amount: 4000, status: 'pending', statusLabel: 'Pending', due: '2026-04-10' },
+        { id: 'INV-1050', client: 'Sony', desc: 'Bravia in-store — quote', amount: 30000, status: 'active', statusLabel: 'Sent', due: '2026-04-15' },
+        { id: 'INV-1049', client: 'Light+Shade', desc: 'Swipe Jobs — 50% deposit', amount: 37500, status: 'pending', statusLabel: 'Pending', due: '2026-04-20' },
       ],
       team: [
         { id: 1, name: 'Alex Mitchell', role: 'Creative Director', avatar: 'AM', color: '#c8a456', dayRate: 1200, feeType: 'day' },
@@ -2588,6 +2603,7 @@
               phaseStatuses: p.phase_statuses || {},
               jobNumber: p.job_number, currency: p.currency,
               budgetOriginal: p.budget_original,
+              frameioUrl: p.frameio_url || '',
             };
             // Attach gantt phases
             if (ganttPhases) {
@@ -2671,10 +2687,27 @@
           DB.customIndustries = customIndustries.map(ci => ci.name);
         }
 
+        // Auto-assign job numbers to projects that don't have one
+        let needsSync = false;
+        const existingNums = DB.projects.filter(p => p.jobNumber).map(p => parseInt(p.jobNumber.replace(/^FT-/i, '')) || 0);
+        let nextNum = existingNums.length > 0 ? Math.max(...existingNums) + 1 : 1;
+        DB.projects.forEach(p => {
+          if (!p.jobNumber) {
+            p.jobNumber = 'FT-' + String(nextNum).padStart(3, '0');
+            nextNum++;
+            needsSync = true;
+          }
+        });
+        // Recalculate nextJobNumber from all projects
+        const allNums = DB.projects.filter(p => p.jobNumber).map(p => parseInt(p.jobNumber.replace(/^FT-/i, '')) || 0);
+        const maxNum = allNums.length > 0 ? Math.max(...allNums) : 0;
+        DB.nextJobNumber = 'FT-' + String(maxNum + 1).padStart(3, '0');
+
         // Save to localStorage as cache
         localStorage.setItem(STORAGE_KEY, JSON.stringify(DB));
         supabaseReady = true;
-        console.log('[Supabase] Data loaded successfully');
+        if (needsSync) { setTimeout(() => syncAllToSupabase(), 1000); }
+        console.log('[Supabase] Data loaded successfully, next job #: ' + DB.nextJobNumber);
       } catch (err) {
         console.error('[Supabase] Error loading data:', err);
         // Fall back to localStorage
@@ -2709,6 +2742,7 @@
             person: p.person || '', type: p.type || 'Film',
             archived: p.archived || false, archived_date: p.archivedDate || null,
             phase_statuses: p.phaseStatuses || {},
+            frameio_url: p.frameioUrl || '',
           };
           if (typeof p.id === 'number' && p.id > 1000000000) {
             // New item created locally (Date.now() id) — insert
@@ -2920,6 +2954,7 @@
         status_label: p.statusLabel, stage: p.stage, start_date: p.start,
         deadline: p.deadline, budget: p.budget, progress: p.progress,
         color: p.color, person: p.person, type: p.type,
+        job_number: p.jobNumber || '', frameio_url: p.frameioUrl || '',
       }));
       const { data: insertedProjects } = await supa.from('projects').insert(projectRows).select();
 
@@ -4673,8 +4708,9 @@
           <h1>${client.name}</h1>
           <p>${client.industry || 'No industry'}${client.contact ? ' &mdash; ' + client.contact : ''}${client.email ? ' &mdash; ' + client.email : ''}${client.phone ? ' &mdash; ' + client.phone : ''}${client.address ? '<br><span style="font-size:11px;color:var(--text-muted);">' + client.address + '</span>' : ''}</p>
         </div>
-        <div class="header-right">
+        <div class="header-right" style="display:flex;gap:8px;">
           <button class="btn btn-ghost" onclick="openEditClient('${client.name.replace(/'/g,"\\'")}')">Edit Client Details</button>
+          <button class="btn btn-ghost" onclick="confirmDeleteClient(${client.id})" style="color:var(--red);border-color:rgba(239,68,68,0.3);">Delete Client</button>
         </div>
       `;
 
@@ -6486,6 +6522,46 @@
       showToast('Industry "' + name + '" added');
     }
 
+    function confirmDeleteClient(clientId) {
+      const client = DB.clients.find(c => c.id === clientId);
+      if (!client) return;
+      const clientProjects = DB.projects.filter(p => p.client === client.name);
+      let msg = `Are you sure you want to delete <strong>"${client.name}"</strong>?`;
+      if (clientProjects.length > 0) {
+        msg += `<br><br><span style="color:var(--red);font-size:11px;">⚠ This client has ${clientProjects.length} project(s) linked. The projects will remain but the client reference will be cleared.</span>`;
+      }
+      msg += `<br><br><span style="font-size:11px;color:var(--text-muted);">This action cannot be undone.</span>`;
+      // Reuse delete project modal pattern
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.id = 'modal-delete-client';
+      overlay.innerHTML = `
+        <div class="modal" style="max-width:420px;">
+          <h3 style="color:var(--red);">Delete Client</h3>
+          <p style="font-size:12px;line-height:1.6;">${msg}</p>
+          <div class="modal-actions" style="margin-top:20px;">
+            <button class="btn btn-ghost" onclick="document.getElementById('modal-delete-client').remove()">Cancel</button>
+            <button class="btn" onclick="executeDeleteClient(${clientId})" style="background:var(--red);color:#fff;font-weight:700;">Delete Client</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
+    }
+
+    function executeDeleteClient(clientId) {
+      const client = DB.clients.find(c => c.id === clientId);
+      if (!client) return;
+      // Remove client
+      DB.clients = DB.clients.filter(c => c.id !== clientId);
+      // Clear client reference from projects (keep projects)
+      DB.projects.forEach(p => { if (p.client === client.name) p.client = ''; });
+      // Clear from invoices
+      DB.invoices.forEach(i => { if (i.client === client.name) i.client = ''; });
+      saveData();
+      document.getElementById('modal-delete-client').remove();
+      showToast('Client "' + client.name + '" deleted');
+      showPage('clients');
+    }
+
     function openEditClient(clientName) {
       const client = DB.clients.find(c => c.name === clientName);
       if (!client) return;
@@ -7482,8 +7558,102 @@
         </div>
       `;
 
+      // Frame.io section
+      renderFrameioSection(p);
+
       // Render crew/team costs section
       renderCrewSection(id);
+    }
+
+    // ===========================
+    // FRAME.IO INTEGRATION
+    // ===========================
+    function renderFrameioSection(p) {
+      const frameioUrl = p.frameioUrl || '';
+      const actionsEl = document.getElementById('pd-frameio-actions');
+      const bodyEl = document.getElementById('pd-frameio');
+
+      if (frameioUrl) {
+        actionsEl.innerHTML = `
+          <div style="display:flex;gap:6px;">
+            <a href="${frameioUrl}" target="_blank" class="btn btn-primary btn-sm" style="text-decoration:none;">Open in Frame.io &#8599;</a>
+            <button class="btn btn-ghost btn-sm" onclick="editFrameioLink(${p.id})" style="font-size:10px;">Edit Link</button>
+            <button class="btn btn-ghost btn-sm" onclick="removeFrameioLink(${p.id})" style="font-size:10px;color:var(--red);">Remove</button>
+          </div>`;
+        bodyEl.innerHTML = `
+          <div style="display:flex;align-items:center;gap:14px;padding:4px 0;">
+            <div style="width:48px;height:48px;border-radius:8px;background:rgba(200,164,86,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:12px;font-weight:600;color:var(--text);">Project linked to Frame.io</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${frameioUrl}">${frameioUrl}</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:10px;color:var(--text-muted);">
+            Click <strong>"Open in Frame.io"</strong> to view assets, review files, and leave comments directly in Frame.io.
+          </div>`;
+      } else {
+        actionsEl.innerHTML = '';
+        bodyEl.innerHTML = `
+          <div style="text-align:center;padding:24px 16px;">
+            <div style="width:48px;height:48px;border-radius:12px;background:rgba(200,164,86,0.08);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+            </div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">No Frame.io project linked yet</div>
+            <button class="btn btn-sm" onclick="editFrameioLink(${p.id})" style="background:var(--accent);color:#0a0a0c;font-weight:700;font-size:11px;">+ Link Frame.io Project</button>
+          </div>`;
+      }
+    }
+
+    function editFrameioLink(projectId) {
+      const p = DB.projects.find(p => p.id === projectId);
+      if (!p) return;
+      const currentUrl = p.frameioUrl || '';
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay active';
+      overlay.id = 'modal-frameio-link';
+      overlay.innerHTML = `
+        <div class="modal" style="max-width:480px;">
+          <h3 style="display:flex;align-items:center;gap:8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+            Link Frame.io Project
+          </h3>
+          <p style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">Paste the Frame.io project URL from your browser. This creates a quick-access link to review assets and files.</p>
+          <div class="form-group">
+            <div class="form-label">Frame.io Project URL</div>
+            <input class="form-input" id="frameio-url-input" value="${currentUrl}" placeholder="https://next.frame.io/project/..." style="font-family:var(--mono);font-size:11px;">
+          </div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:-8px;margin-bottom:16px;">
+            Find this in your browser address bar when viewing the project in Frame.io
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-ghost" onclick="document.getElementById('modal-frameio-link').remove()">Cancel</button>
+            <button class="btn" onclick="saveFrameioLink(${projectId})" style="background:var(--accent);color:#0a0a0c;font-weight:700;">Save Link</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
+      setTimeout(() => document.getElementById('frameio-url-input').focus(), 100);
+    }
+
+    function saveFrameioLink(projectId) {
+      const url = document.getElementById('frameio-url-input').value.trim();
+      const p = DB.projects.find(p => p.id === projectId);
+      if (!p) return;
+      p.frameioUrl = url;
+      saveData();
+      document.getElementById('modal-frameio-link').remove();
+      renderFrameioSection(p);
+      showToast(url ? 'Frame.io project linked' : 'Frame.io link removed');
+    }
+
+    function removeFrameioLink(projectId) {
+      const p = DB.projects.find(p => p.id === projectId);
+      if (!p) return;
+      p.frameioUrl = '';
+      saveData();
+      renderFrameioSection(p);
+      showToast('Frame.io link removed');
     }
 
     // ===========================
@@ -9292,6 +9462,9 @@
       document.getElementById('cp-client-new-wrap').style.display = 'none';
       document.getElementById('cp-name').value = '';
 
+      // Show next job number
+      document.getElementById('cp-job-number').textContent = DB.nextJobNumber || 'FT-001';
+
       // Populate Senior Producer dropdown
       buildCalcTeamDropdown('cp-producer', 'producer');
 
@@ -9509,7 +9682,10 @@
       // Timezone clocks
       if (!DB.tzClocks) DB.tzClocks = ['America/New_York', 'Europe/London', 'Asia/Tokyo'];
       if (!DB.nextJobNumber) {
-        DB.nextJobNumber = 'FT-001';
+        // Auto-detect next job number from existing projects
+        const existingNums = DB.projects.filter(p => p.jobNumber).map(p => parseInt(p.jobNumber.replace(/^FT-/i, '')) || 0);
+        const maxNum = existingNums.length > 0 ? Math.max(...existingNums) : 0;
+        DB.nextJobNumber = 'FT-' + String(maxNum + 1).padStart(3, '0');
       } else if (!DB.nextJobNumber.startsWith('FT-')) {
         // Convert old numeric format to FT- format
         DB.nextJobNumber = 'FT-' + String(parseInt(DB.nextJobNumber) || 1).padStart(3, '0');
