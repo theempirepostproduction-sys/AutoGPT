@@ -2339,6 +2339,82 @@
     </div>
   </div>
 
+  <!-- ===== TASK DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="modal-task-detail" style="align-items:flex-start;padding-top:40px;">
+    <div class="modal" style="max-width:640px;width:100%;max-height:85vh;overflow-y:auto;padding:0;">
+      <!-- Header -->
+      <div id="td-header" style="padding:20px 24px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:2;"></div>
+      <!-- Body -->
+      <div style="padding:20px 24px;">
+        <!-- Assignee -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding:12px 14px;background:var(--surface-2);border-radius:8px;border:1px solid var(--border);">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-muted);width:70px;flex-shrink:0;">Assigned</div>
+          <div id="td-assignee-display" style="flex:1;font-size:12px;color:var(--text);"></div>
+          <button class="btn btn-ghost btn-sm" onclick="toggleTdAssigneeEdit()" id="td-assignee-edit-btn" style="font-size:10px;">✎ Change</button>
+        </div>
+        <div id="td-assignee-edit" style="display:none;margin-bottom:16px;">
+          <select class="form-select" id="td-assignee-select" style="font-size:12px;"></select>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="btn btn-primary btn-sm" onclick="saveTdAssignee()">Save</button>
+            <button class="btn btn-ghost btn-sm" onclick="toggleTdAssigneeEdit()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Files & Iterations -->
+        <div style="margin-bottom:20px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Files & Iterations</div>
+          <div id="td-files-list" style="margin-bottom:10px;"></div>
+          <label style="display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px dashed var(--border);border-radius:8px;cursor:pointer;font-size:11px;color:var(--text-muted);transition:border-color .2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+            <span style="font-size:16px;">⬆</span> Upload file (PDF, MP4, ZIP, DOC…)
+            <input type="file" style="display:none;" multiple onchange="handleTdFileUpload(this)">
+          </label>
+        </div>
+
+        <!-- Review File -->
+        <div style="margin-bottom:20px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Review Link</div>
+          <div id="td-review-list" style="margin-bottom:8px;"></div>
+          <div style="display:flex;gap:8px;">
+            <input class="form-input" id="td-review-url" placeholder="Paste Frame.io / review link…" style="flex:1;font-size:11px;">
+            <input class="form-input" id="td-review-label" placeholder="Label (optional)" style="width:130px;font-size:11px;">
+            <button class="btn btn-ghost btn-sm" onclick="addTdReviewLink()" style="white-space:nowrap;">+ Add</button>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div style="margin-bottom:20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-muted);">Notes</div>
+            <button class="btn btn-ghost btn-sm" id="td-note-save-btn" onclick="saveTdNotes()" style="font-size:10px;display:none;">💾 Save Notes</button>
+          </div>
+          <textarea id="td-notes" rows="4" class="form-input" placeholder="Add notes, context, or instructions…" style="font-size:12px;resize:vertical;line-height:1.5;" oninput="document.getElementById('td-note-save-btn').style.display='inline-flex'"></textarea>
+        </div>
+
+        <!-- Activity -->
+        <div style="margin-bottom:8px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Activity</div>
+          <div id="td-activity" style="font-size:11px;color:var(--text-muted);max-height:160px;overflow-y:auto;"></div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <div style="padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface);position:sticky;bottom:0;z-index:2;">
+        <button class="btn btn-primary" id="td-complete-btn" onclick="completeTdTask()" style="font-size:11px;">✓ Mark Complete</button>
+        <button class="btn btn-ghost" onclick="closeModal('task-detail')" style="font-size:11px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PHASE DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="modal-phase-detail" style="align-items:flex-start;padding-top:40px;">
+    <div class="modal" style="max-width:560px;width:100%;max-height:80vh;overflow-y:auto;padding:0;">
+      <div id="pd2-header" style="padding:20px 24px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:2;"></div>
+      <div id="pd2-body" style="padding:20px 24px;"></div>
+      <div style="padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;background:var(--surface);position:sticky;bottom:0;">
+        <button class="btn btn-ghost" onclick="closeModal('phase-detail')" style="font-size:11px;">Close</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Calculator: Add as New Project Modal -->
   <div class="modal-overlay" id="modal-calc-project">
     <div class="modal" style="max-width:520px;">
@@ -3879,6 +3955,7 @@
 
                 rowsHTML += `<div class="gantt-row gantt-group-${gi}-row">
                   <div class="gantt-bar" style="left:${phStartX}px;width:${phBarWidth}px;background:${phase.color};opacity:0.8;height:60%;top:20%;border-radius:4px;"
+                    data-project-id="${project.id}" data-phase-key="${phase.key}"
                     onmouseenter="showTip(event,'${phase.label}','${fmtDate(phase.start)} - ${fmtDate(phase.end)}')"
                     onmousemove="moveTip(event)" onmouseleave="hideTip()"
                     ondblclick="event.stopPropagation();openGanttDateEdit('phase',${project.id},'${phase.key}')">
@@ -3899,6 +3976,7 @@
 
                     rowsHTML += `<div class="gantt-row gantt-group-${gi}-row">
                       <div class="gantt-bar subtask-bar" style="left:${stStartX}px;width:${stBarWidth}px;background:${phase.color};opacity:0.5;height:50%;top:25%;border-radius:3px;"
+                        data-project-id="${project.id}" data-phase-key="${phase.key}" data-subtask-idx="${sti}"
                         onmouseenter="showTip(event,'${st.name.replace(/'/g,"\\'")}','${fmtDate(st.start)} - ${fmtDate(st.end)}')"
                         onmousemove="moveTip(event)" onmouseleave="hideTip()"
                         ondblclick="event.stopPropagation();openGanttDateEdit('subtask',${project.id},'${phase.key}',${sti})">
@@ -3972,6 +4050,7 @@
 
                 rowsHTML += `<div class="gantt-row gantt-group-${gi}-row">
                   <div class="gantt-bar" style="left:${phStartX}px;width:${phBarWidth}px;background:${phase.color};opacity:0.8;height:60%;top:20%;border-radius:4px;"
+                    data-project-id="${project.id}" data-phase-key="${phase.key}"
                     onmouseenter="showTip(event,'${phase.label}','${fmtDate(phase.start)} - ${fmtDate(phase.end)}')"
                     onmousemove="moveTip(event)" onmouseleave="hideTip()"
                     ondblclick="event.stopPropagation();openGanttDateEdit('phase',${project.id},'${phase.key}')">
@@ -3993,6 +4072,7 @@
 
                     rowsHTML += `<div class="gantt-row gantt-group-${gi}-row">
                       <div class="gantt-bar subtask-bar" style="left:${stStartX}px;width:${stBarWidth}px;background:${phase.color};opacity:0.5;height:50%;top:25%;border-radius:3px;"
+                        data-project-id="${project.id}" data-phase-key="${phase.key}" data-subtask-idx="${si}"
                         onmouseenter="showTip(event,'${st.name.replace(/'/g,"\\'")}','${fmtDate(st.start)} - ${fmtDate(st.end)}')"
                         onmousemove="moveTip(event)" onmouseleave="hideTip()">
                         <span class="gantt-bar-text" style="font-size:8px;">${stBarWidth > 50 ? st.name : ''}</span>
@@ -4146,6 +4226,363 @@
       return new Date(newMs).toISOString().split('T')[0];
     }
 
+    // ============================================================
+    // TASK DETAIL MODAL
+    // ============================================================
+    let _tdCtx = null; // { projectId, phaseKey, subtaskIdx }
+
+    const TD_STATUS_LABELS = { todo: 'To Do', in_progress: 'In Progress', review: 'In Review', approved: 'Approved', done: 'Done' };
+    const TD_STATUS_COLORS = { todo: '#6b7280', in_progress: '#3b82f6', review: '#f59e0b', approved: '#8b5cf6', done: '#22c55e' };
+
+    function openGanttSubtaskDetail(projectId, phaseKey, subtaskIdx) {
+      const p = DB.projects.find(pr => pr.id === projectId);
+      if (!p) return;
+      const phases = p.ganttPhases || [];
+      const phase = phases.find(ph => ph.key === phaseKey);
+      if (!phase || !phase.subTasks || !phase.subTasks[subtaskIdx]) return;
+      const st = phase.subTasks[subtaskIdx];
+
+      // Ensure extended fields exist
+      if (!st.status) st.status = 'todo';
+      if (!st.files) st.files = [];
+      if (!st.reviewLinks) st.reviewLinks = [];
+      if (!st.notes) st.notes = '';
+      if (!st.activity) st.activity = [];
+      if (!st.assignee) st.assignee = '';
+
+      _tdCtx = { projectId, phaseKey, subtaskIdx };
+
+      const statusCol = TD_STATUS_COLORS[st.status] || '#6b7280';
+      const statusLbl = TD_STATUS_LABELS[st.status] || st.status;
+
+      // Header
+      document.getElementById('td-header').innerHTML = `
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+              <span style="padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;background:${phase.color}22;color:${phase.color};border:1px solid ${phase.color}44;">${phase.label}</span>
+              <span style="padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:.8px;background:${statusCol}22;color:${statusCol};border:1px solid ${statusCol}44;">${statusLbl}</span>
+            </div>
+            <div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:4px;">${st.name}</div>
+            <div style="font-size:11px;color:var(--text-muted);">${p.name} &nbsp;•&nbsp; ${fmtDate(st.start)} → ${fmtDate(st.end)}</div>
+          </div>
+          <select class="form-select" onchange="setTdStatus(this.value)" style="width:130px;font-size:11px;" id="td-status-sel">
+            ${Object.entries(TD_STATUS_LABELS).map(([k,v]) => `<option value="${k}" ${st.status===k?'selected':''}>${v}</option>`).join('')}
+          </select>
+        </div>`;
+
+      // Assignee
+      const assigneeDisplay = st.assignee
+        ? `<span style="background:var(--accent);color:#0a0a0c;padding:2px 9px;border-radius:12px;font-weight:700;font-size:11px;">${st.assignee}</span>`
+        : `<span style="color:var(--text-muted);font-style:italic;font-size:11px;">Unassigned</span>`;
+      document.getElementById('td-assignee-display').innerHTML = assigneeDisplay;
+      document.getElementById('td-assignee-edit').style.display = 'none';
+      document.getElementById('td-assignee-edit-btn').textContent = '✎ Change';
+
+      // Populate assignee select
+      const sel = document.getElementById('td-assignee-select');
+      sel.innerHTML = `<option value="">— Unassigned —</option>` + (DB.team || []).map(m => `<option value="${m.name}" ${st.assignee===m.name?'selected':''}>${m.name} (${m.role||''})</option>`).join('');
+
+      // Files
+      renderTdFiles();
+
+      // Review links
+      renderTdReviewLinks();
+
+      // Notes
+      document.getElementById('td-notes').value = st.notes || '';
+      document.getElementById('td-note-save-btn').style.display = 'none';
+
+      // Activity
+      renderTdActivity();
+
+      // Complete button state
+      const completeBtn = document.getElementById('td-complete-btn');
+      if (st.status === 'done') {
+        completeBtn.textContent = '↩ Reopen';
+        completeBtn.style.background = 'var(--surface-3)';
+        completeBtn.style.color = 'var(--text-muted)';
+      } else {
+        completeBtn.textContent = '✓ Mark Complete';
+        completeBtn.style.background = '';
+        completeBtn.style.color = '';
+      }
+
+      // Clear review inputs
+      document.getElementById('td-review-url').value = '';
+      document.getElementById('td-review-label').value = '';
+
+      openModal('task-detail');
+    }
+
+    function getTdSubtask() {
+      if (!_tdCtx) return null;
+      const p = DB.projects.find(pr => pr.id === _tdCtx.projectId);
+      if (!p) return null;
+      const phase = (p.ganttPhases || []).find(ph => ph.key === _tdCtx.phaseKey);
+      if (!phase || !phase.subTasks) return null;
+      return phase.subTasks[_tdCtx.subtaskIdx] || null;
+    }
+
+    function setTdStatus(status) {
+      const st = getTdSubtask();
+      if (!st) return;
+      const old = st.status;
+      st.status = status;
+      logTdActivity(`Status changed: ${TD_STATUS_LABELS[old]||old} → ${TD_STATUS_LABELS[status]||status}`);
+      saveData();
+      // Refresh header badge + complete button
+      const statusCol = TD_STATUS_COLORS[status] || '#6b7280';
+      const statusLbl = TD_STATUS_LABELS[status] || status;
+      const completeBtn = document.getElementById('td-complete-btn');
+      if (status === 'done') {
+        completeBtn.textContent = '↩ Reopen';
+        completeBtn.style.background = 'var(--surface-3)';
+        completeBtn.style.color = 'var(--text-muted)';
+      } else {
+        completeBtn.textContent = '✓ Mark Complete';
+        completeBtn.style.background = '';
+        completeBtn.style.color = '';
+      }
+    }
+
+    function completeTdTask() {
+      const st = getTdSubtask();
+      if (!st) return;
+      if (st.status === 'done') {
+        st.status = 'todo';
+        logTdActivity('Task reopened');
+      } else {
+        st.status = 'done';
+        st.completedAt = new Date().toISOString();
+        logTdActivity('Task marked complete ✓');
+      }
+      saveData();
+      // Reopen to refresh
+      openGanttSubtaskDetail(_tdCtx.projectId, _tdCtx.phaseKey, _tdCtx.subtaskIdx);
+    }
+
+    function toggleTdAssigneeEdit() {
+      const panel = document.getElementById('td-assignee-edit');
+      const btn = document.getElementById('td-assignee-edit-btn');
+      const visible = panel.style.display !== 'none';
+      panel.style.display = visible ? 'none' : 'block';
+      btn.textContent = visible ? '✎ Change' : '✕ Cancel';
+    }
+
+    function saveTdAssignee() {
+      const st = getTdSubtask();
+      if (!st) return;
+      const val = document.getElementById('td-assignee-select').value;
+      const old = st.assignee;
+      st.assignee = val;
+      logTdActivity(val ? `Assigned to ${val}` : `Unassigned (was ${old||'—'})`);
+      saveData();
+      const assigneeDisplay = val
+        ? `<span style="background:var(--accent);color:#0a0a0c;padding:2px 9px;border-radius:12px;font-weight:700;font-size:11px;">${val}</span>`
+        : `<span style="color:var(--text-muted);font-style:italic;font-size:11px;">Unassigned</span>`;
+      document.getElementById('td-assignee-display').innerHTML = assigneeDisplay;
+      toggleTdAssigneeEdit();
+      showToast(val ? `Assigned to ${val}` : 'Unassigned');
+    }
+
+    function handleTdFileUpload(input) {
+      const st = getTdSubtask();
+      if (!st) return;
+      if (!st.files) st.files = [];
+      Array.from(input.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const fileObj = {
+            id: Date.now() + Math.random(),
+            name: file.name,
+            size: file.size,
+            type: file.type,
+            dataUrl: e.target.result,
+            uploadedAt: new Date().toISOString(),
+          };
+          st.files.push(fileObj);
+          logTdActivity(`Uploaded: ${file.name}`);
+          saveData();
+          renderTdFiles();
+        };
+        reader.readAsDataURL(file);
+      });
+      input.value = '';
+    }
+
+    function renderTdFiles() {
+      const st = getTdSubtask();
+      const container = document.getElementById('td-files-list');
+      if (!container) return;
+      const files = st ? (st.files || []) : [];
+      if (!files.length) {
+        container.innerHTML = '<div style="font-size:11px;color:var(--text-muted);padding:4px 0 8px;">No files uploaded yet.</div>';
+        return;
+      }
+      container.innerHTML = files.map((f, i) => {
+        const sizeStr = f.size > 1048576 ? (f.size/1048576).toFixed(1)+'MB' : f.size > 1024 ? (f.size/1024).toFixed(0)+'KB' : f.size+'B';
+        const isImage = f.type && f.type.startsWith('image/');
+        const thumb = isImage ? `<img src="${f.dataUrl}" style="width:32px;height:32px;object-fit:cover;border-radius:4px;flex-shrink:0;">` : `<div style="width:32px;height:32px;border-radius:4px;background:var(--surface-3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">📄</div>`;
+        return `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;">
+          ${thumb}
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:11px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.name}</div>
+            <div style="font-size:10px;color:var(--text-muted);">${sizeStr} · ${new Date(f.uploadedAt).toLocaleDateString('en-AU',{day:'2-digit',month:'short'})}</div>
+          </div>
+          <a href="${f.dataUrl}" download="${f.name}" style="color:var(--accent);font-size:10px;font-weight:700;text-decoration:none;padding:4px 8px;border:1px solid var(--accent);border-radius:4px;" title="Download">⬇ Download</a>
+          <button onclick="removeTdFile(${i})" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:13px;padding:4px;" title="Remove">✕</button>
+        </div>`;
+      }).join('');
+    }
+
+    function removeTdFile(idx) {
+      const st = getTdSubtask();
+      if (!st || !st.files) return;
+      const removed = st.files.splice(idx, 1)[0];
+      logTdActivity(`Removed file: ${removed.name}`);
+      saveData();
+      renderTdFiles();
+    }
+
+    function addTdReviewLink() {
+      const url = document.getElementById('td-review-url').value.trim();
+      if (!url) return;
+      const label = document.getElementById('td-review-label').value.trim() || 'Review Link';
+      const st = getTdSubtask();
+      if (!st) return;
+      if (!st.reviewLinks) st.reviewLinks = [];
+      st.reviewLinks.push({ id: Date.now(), label, url, addedAt: new Date().toISOString() });
+      logTdActivity(`Review link added: ${label}`);
+      saveData();
+      document.getElementById('td-review-url').value = '';
+      document.getElementById('td-review-label').value = '';
+      renderTdReviewLinks();
+    }
+
+    function renderTdReviewLinks() {
+      const st = getTdSubtask();
+      const container = document.getElementById('td-review-list');
+      if (!container) return;
+      const links = st ? (st.reviewLinks || []) : [];
+      if (!links.length) {
+        container.innerHTML = '<div style="font-size:11px;color:var(--text-muted);padding:4px 0 4px;">No review links yet.</div>';
+        return;
+      }
+      container.innerHTML = links.map((l, i) => `
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;">
+          <span style="font-size:16px;">🔗</span>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:11px;font-weight:600;color:var(--text);">${l.label}</div>
+            <div style="font-size:10px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${l.url}</div>
+          </div>
+          <a href="${l.url}" target="_blank" style="color:var(--accent);font-size:10px;font-weight:700;text-decoration:none;padding:4px 8px;border:1px solid var(--accent);border-radius:4px;">↗ Open</a>
+          <button onclick="removeTdReviewLink(${i})" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:13px;padding:4px;">✕</button>
+        </div>`).join('');
+    }
+
+    function removeTdReviewLink(idx) {
+      const st = getTdSubtask();
+      if (!st || !st.reviewLinks) return;
+      const removed = st.reviewLinks.splice(idx, 1)[0];
+      logTdActivity(`Review link removed: ${removed.label}`);
+      saveData();
+      renderTdReviewLinks();
+    }
+
+    function saveTdNotes() {
+      const st = getTdSubtask();
+      if (!st) return;
+      st.notes = document.getElementById('td-notes').value;
+      logTdActivity('Notes updated');
+      saveData();
+      document.getElementById('td-note-save-btn').style.display = 'none';
+      showToast('Notes saved');
+    }
+
+    function logTdActivity(action) {
+      const st = getTdSubtask();
+      if (!st) return;
+      if (!st.activity) st.activity = [];
+      st.activity.unshift({ timestamp: new Date().toISOString(), action });
+      if (st.activity.length > 50) st.activity.length = 50;
+      renderTdActivity();
+    }
+
+    function renderTdActivity() {
+      const st = getTdSubtask();
+      const container = document.getElementById('td-activity');
+      if (!container) return;
+      const acts = st ? (st.activity || []) : [];
+      if (!acts.length) {
+        container.innerHTML = '<div style="color:var(--text-muted);font-style:italic;">No activity yet.</div>';
+        return;
+      }
+      container.innerHTML = acts.map(a => {
+        const d = new Date(a.timestamp);
+        const when = d.toLocaleDateString('en-AU',{day:'2-digit',month:'short'}) + ' ' + d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'});
+        return `<div style="padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:baseline;">
+          <div style="flex:1;font-size:11px;color:var(--text);">${a.action}</div>
+          <div style="font-size:10px;color:var(--text-muted);white-space:nowrap;">${when}</div>
+        </div>`;
+      }).join('');
+    }
+
+    // ============================================================
+    // PHASE DETAIL MODAL
+    // ============================================================
+    function openGanttPhaseDetail(projectId, phaseKey) {
+      const p = DB.projects.find(pr => pr.id === projectId);
+      if (!p) return;
+      const phases = p.ganttPhases || [];
+      const phase = phases.find(ph => ph.key === phaseKey);
+      if (!phase) return;
+
+      const subtasks = phase.subTasks || [];
+      const done = subtasks.filter(s => s.status === 'done').length;
+      const total = subtasks.length;
+      const pct = total > 0 ? Math.round(done / total * 100) : 0;
+
+      document.getElementById('pd2-header').innerHTML = `
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:12px;height:12px;border-radius:50%;background:${phase.color};flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:16px;font-weight:700;color:var(--text);">${phase.label}</div>
+            <div style="font-size:11px;color:var(--text-muted);">${p.name} &nbsp;•&nbsp; ${fmtDate(phase.start)} → ${fmtDate(phase.end)}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:18px;font-weight:800;color:${phase.color};">${pct}%</div>
+            <div style="font-size:10px;color:var(--text-muted);">${done}/${total} tasks done</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${phase.color};border-radius:2px;transition:width .4s;"></div>
+        </div>`;
+
+      if (!subtasks.length) {
+        document.getElementById('pd2-body').innerHTML = '<div style="color:var(--text-muted);font-size:12px;text-align:center;padding:24px 0;">No tasks in this phase yet.</div>';
+      } else {
+        document.getElementById('pd2-body').innerHTML = `
+          <div style="font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">Tasks</div>
+          ${subtasks.map((st, idx) => {
+            const status = st.status || 'todo';
+            const statusCol = TD_STATUS_COLORS[status] || '#6b7280';
+            const statusLbl = TD_STATUS_LABELS[status] || status;
+            return `<div onclick="closeModal('phase-detail');setTimeout(()=>openGanttSubtaskDetail(${projectId},'${phaseKey}',${idx}),80);" style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='${phase.color}'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="width:8px;height:8px;border-radius:50%;background:${statusCol};flex-shrink:0;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:12px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${st.name}</div>
+                <div style="font-size:10px;color:var(--text-muted);">${st.assignee ? '👤 '+st.assignee+' · ' : ''}${fmtDate(st.start)} → ${fmtDate(st.end)}</div>
+              </div>
+              <span style="padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;background:${statusCol}22;color:${statusCol};border:1px solid ${statusCol}44;">${statusLbl}</span>
+              <span style="color:var(--text-muted);font-size:13px;">›</span>
+            </div>`;
+          }).join('')}`;
+      }
+
+      openModal('phase-detail');
+    }
+
     function syncGanttRowHeights() {
       const gl = document.getElementById('gantt-labels');
       const gc = document.getElementById('gantt-container');
@@ -4223,6 +4660,9 @@
         projectId: bar.dataset.projectId ? parseInt(bar.dataset.projectId) : null,
         taskId: bar.dataset.taskId ? parseInt(bar.dataset.taskId) : null,
         subtaskId: bar.dataset.subtaskId ? parseInt(bar.dataset.subtaskId) : null,
+        phaseKey: bar.dataset.phaseKey || null,
+        subtaskIdx: bar.dataset.subtaskIdx !== undefined ? parseInt(bar.dataset.subtaskIdx) : null,
+        hasMoved: false,
       };
     }
 
@@ -4240,6 +4680,9 @@
         projectId: bar.dataset.projectId ? parseInt(bar.dataset.projectId) : null,
         taskId: bar.dataset.taskId ? parseInt(bar.dataset.taskId) : null,
         subtaskId: bar.dataset.subtaskId ? parseInt(bar.dataset.subtaskId) : null,
+        phaseKey: bar.dataset.phaseKey || null,
+        subtaskIdx: bar.dataset.subtaskIdx !== undefined ? parseInt(bar.dataset.subtaskIdx) : null,
+        hasMoved: false,
       };
     }
 
@@ -4262,6 +4705,7 @@
     document.addEventListener('mousemove', (e) => {
       if (!ganttDrag) return;
       const dx = e.clientX - ganttDrag.startMouseX;
+      if (Math.abs(dx) > 3) ganttDrag.hasMoved = true;
       if (ganttDrag.mode === 'move') {
         ganttDrag.bar.style.left = (ganttDrag.origLeft + dx) + 'px';
       } else if (ganttDrag.mode === 'resize-right') {
@@ -4296,6 +4740,23 @@
       if (!ganttDrag) return;
       const d = ganttDrag;
       d.bar.classList.remove('dragging');
+      ganttDrag = null;
+
+      // Skip save if the user just clicked (no real drag) — open detail window instead
+      if (!d.hasMoved) {
+        // Restore bar to original position (no movement)
+        d.bar.style.left = d.origLeft + 'px';
+        d.bar.style.width = d.origWidth + 'px';
+        // Route click to appropriate detail window
+        if (d.phaseKey && d.subtaskIdx !== null && d.subtaskIdx !== undefined && !isNaN(d.subtaskIdx)) {
+          openGanttSubtaskDetail(d.projectId, d.phaseKey, d.subtaskIdx);
+        } else if (d.phaseKey && d.projectId) {
+          openGanttPhaseDetail(d.projectId, d.phaseKey);
+        } else if (d.projectId) {
+          openProjectDetail(d.projectId);
+        }
+        return;
+      }
 
       // Calculate new dates from pixel positions
       const finalLeft = parseInt(d.bar.style.left);
@@ -4318,20 +4779,34 @@
       const newStart = new Date(minD);
       newStart.setDate(newStart.getDate() + daysFromLeft);
       const newEnd = new Date(newStart);
-      newEnd.setDate(newEnd.getDate() + durationDays);
+      // Bar width = (duration + 1) * colW (end day is inclusive), so subtract 1
+      newEnd.setDate(newEnd.getDate() + durationDays - 1);
 
       const fmtISO = (dt) => dt.toISOString().split('T')[0];
 
-      if (d.subtaskId && d.projectId) {
-        // Subtask — update only the subtask dates, NOT the parent project
+      if (d.phaseKey && d.subtaskIdx !== null && !isNaN(d.subtaskIdx) && d.projectId) {
+        // Subtask via phase index (primary path)
         const p = DB.projects.find(p => p.id === d.projectId);
-        if (p && p.subTasks) {
-          const st = p.subTasks.find(s => s.id === d.subtaskId);
-          if (st) {
+        if (p) {
+          const phase = (p.ganttPhases || []).find(ph => ph.key === d.phaseKey);
+          if (phase && phase.subTasks && phase.subTasks[d.subtaskIdx]) {
+            const st = phase.subTasks[d.subtaskIdx];
             st.start = fmtISO(newStart);
             st.end = fmtISO(newEnd);
             saveData();
             showToast(st.name + ': ' + fmtDate(st.start) + ' → ' + fmtDate(st.end));
+          }
+        }
+      } else if (d.phaseKey && d.projectId) {
+        // Phase bar drag
+        const p = DB.projects.find(p => p.id === d.projectId);
+        if (p) {
+          const phase = (p.ganttPhases || []).find(ph => ph.key === d.phaseKey);
+          if (phase) {
+            phase.start = fmtISO(newStart);
+            phase.end = fmtISO(newEnd);
+            saveData();
+            showToast(phase.label + ': ' + fmtDate(phase.start) + ' → ' + fmtDate(phase.end));
           }
         }
       } else if (d.projectId) {
@@ -4350,7 +4825,6 @@
           showToast(t.name + ': ' + fmtDate(t.due));
         }
       }
-      ganttDrag = null;
       renderGantt();
     });
 
