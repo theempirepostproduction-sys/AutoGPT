@@ -1686,6 +1686,22 @@
           <div class="card-body" id="settings-project-types"></div>
         </div>
 
+        <!-- Data Backup -->
+        <div class="card" style="margin-top:24px;">
+          <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;">
+            <div class="card-title">Data Backup</div>
+            <span id="backup-last-label" style="font-size:10px;color:var(--text-muted);"></span>
+          </div>
+          <div class="card-body">
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;">While running in Local Mode all data lives in this browser only — download a backup file regularly, because a cleared browser profile wipes everything. A backup restores on any machine.</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-primary" onclick="downloadLocalBackup()">&#11015; Download Backup</button>
+              <button class="btn btn-ghost" onclick="document.getElementById('backup-restore-input').click()">&#11014; Restore from Backup&hellip;</button>
+              <input type="file" id="backup-restore-input" accept=".json,application/json" onchange="restoreLocalBackup(this)" style="display:none;">
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- New Project Type Modal -->
@@ -5981,10 +5997,11 @@
     // UNIVERSAL CONFIRM-DELETE MODAL
     // ============================================================
     let _deleteCallback = null;
-    function showConfirmDelete(title, message, onConfirm) {
+    function showConfirmDelete(title, message, onConfirm, btnLabel) {
       _deleteCallback = onConfirm;
       document.getElementById('confirm-delete-title').textContent = title;
       document.getElementById('confirm-delete-msg').innerHTML = message;
+      document.getElementById('confirm-delete-btn').textContent = btnLabel || 'Yes, Delete';
       document.getElementById('confirm-delete-btn').onclick = () => {
         closeModal('confirm-delete');
         if (_deleteCallback) _deleteCallback();
@@ -10796,6 +10813,7 @@
       if (!DB.admins) DB.admins = ['Alex Mitchell'];
       renderAdminsSettings();
       renderProjectTypesSettings();
+      updateBackupLabel();
     }
 
     // ===========================
@@ -11719,10 +11737,57 @@
       if (document.getElementById('offline-pill')) return;
       const pill = document.createElement('div');
       pill.id = 'offline-pill';
-      pill.title = 'Cloud backend unreachable — changes are saved on this device only and will not sync.';
-      pill.style.cssText = 'position:fixed;bottom:14px;left:14px;z-index:9999;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:rgba(245,158,11,0.12);border:1px solid var(--orange-dim, #b45309);color:var(--orange, #f59e0b);font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;backdrop-filter:blur(6px);';
+      pill.title = 'Changes save to this device only and will not sync. Click to retry the cloud connection.';
+      pill.onclick = () => { showToast('Retrying cloud connection…'); setTimeout(() => location.reload(), 400); };
+      pill.style.cssText = 'position:fixed;bottom:14px;left:14px;z-index:9999;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:rgba(245,158,11,0.12);border:1px solid var(--orange-dim, #b45309);color:var(--orange, #f59e0b);font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;backdrop-filter:blur(6px);cursor:pointer;';
       pill.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:var(--orange, #f59e0b);animation:pulse 2s infinite;"></span> Offline — saving locally';
       document.body.appendChild(pill);
+    }
+
+    // ── Local backup / restore — the safety net while cloud sync is down ──
+    function downloadLocalBackup() {
+      const stamp = new Date().toISOString().split('T')[0];
+      const blob = new Blob([JSON.stringify(DB, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `FOURTHE-backup-${stamp}.json`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      localStorage.setItem('fourthe_last_backup', new Date().toISOString());
+      updateBackupLabel();
+      showToast('Backup downloaded — keep it somewhere safe');
+    }
+
+    function updateBackupLabel() {
+      const el = document.getElementById('backup-last-label');
+      if (!el) return;
+      const ts = localStorage.getItem('fourthe_last_backup');
+      el.textContent = ts
+        ? 'Last backup: ' + new Date(ts).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
+        : 'No backup taken yet';
+    }
+
+    function restoreLocalBackup(input) {
+      const file = input.files && input.files[0];
+      input.value = '';
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        let parsed;
+        try { parsed = JSON.parse(reader.result); } catch (e) { showToast('That file is not a valid backup'); return; }
+        if (!parsed || !Array.isArray(parsed.projects)) { showToast('That file is not a FOURTHE backup'); return; }
+        const counts = `${parsed.projects.length} project${parsed.projects.length === 1 ? '' : 's'}, ${(parsed.clients || []).length} clients, ${(parsed.team || []).length} team members`;
+        showConfirmDelete(
+          'Restore from backup?',
+          `This replaces everything currently in the dashboard with the backup file (${counts}). The current data is overwritten.`,
+          () => {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+            location.reload();
+          },
+          'Yes, Restore'
+        );
+      };
+      reader.readAsText(file);
     }
 
     // Quick reachability probe for the sync backend (used at boot)
@@ -11910,11 +11975,14 @@
       }
       document.getElementById('login-screen').style.display = 'flex';
       setTimeout(() => document.getElementById('login-email').focus(), 100);
-      // Probe the backend in the background — if it's down, surface the offline option up front
+      // Probe the backend in the background — if it's down, go straight into
+      // Local Mode rather than making the user click through a dead login every boot.
       probeBackend().then(ok => {
-        if (!ok) {
+        if (!ok && !offlineMode) {
           const offEl = document.getElementById('offline-option');
           if (offEl) offEl.style.display = '';
+          enterOfflineMode();
+          setTimeout(() => showToast('Cloud backend unreachable — running in Local Mode'), 700);
         }
       });
     })();
